@@ -60,7 +60,7 @@ public class AIRCRAFT : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Enemy")) // Asegúrate de que los enemigos tengan la etiqueta "Enemy"
+        if (collision.gameObject.CompareTag("Enemy")) // Los enemigos deben tener la etiqueta "Enemy"
         {
             Lives--;  // Resta una vida
             Destroy(collision.gameObject); // Destruye al enemigo al chocar con el jugador
@@ -76,7 +76,7 @@ public class AIRCRAFT : MonoBehaviour
     // Método para manejar el fin del juego
     void EndGame()
     {
-        // Lógica para terminar el juego (puedes mostrar un mensaje de Game Over, cargar una escena, etc.)
+        // Lógica para terminar el juego
         Debug.Log("Juego terminado. No te quedan vidas.");
 
         Destroy(gameObject); // Destruye la nave del jugador

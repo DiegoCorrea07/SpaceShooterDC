@@ -39,7 +39,7 @@ public class ScoreManager : MonoBehaviour
     private void FindScoreText()
     {
         scoreText = GameObject.Find("ScoreText")?.GetComponent<Text>();
-        Debug.Log(scoreText != null ? "ScoreText encontrado" : "ScoreText no se encontró");
+        Debug.Log(scoreText != null ? "ScoreText encontrado" : "ScoreText no se encontró"); //Opcional por depuración
     }
 
     public void AddScore(int points)

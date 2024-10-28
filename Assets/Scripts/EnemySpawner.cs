@@ -19,14 +19,14 @@ public class EnemySpawner : MonoBehaviour
 
     void Start()
     {
-        GameObject playerObject = GameObject.FindWithTag("Player");
+        GameObject playerObject = GameObject.FindWithTag("Player"); 
         if (playerObject != null)
         {
             playerTransform = playerObject.transform;
         }
         else
         {
-            Debug.LogError("No se encontró el jugador con la etiqueta 'Player'.");
+            Debug.LogError("No se encontró el jugador con la etiqueta 'Player'."); //Opcional por depuración
         }
 
         currentSpawnInterval = initialSpawnInterval;
@@ -73,7 +73,7 @@ public class EnemySpawner : MonoBehaviour
     {
         if (playerTransform == null)
         {
-            Debug.LogWarning("playerTransform es nulo al obtener la posición de generación.");
+            Debug.LogWarning("playerTransform es nulo al obtener la posición de generación.");//Opcional por depuración
             return Vector3.zero; // O devuelve una posición predeterminada
         }
 
@@ -84,7 +84,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void EndGame()
     {
-        Debug.Log("Juego terminado. La nave del jugador fue destruida.");
+        Debug.Log("Juego terminado. La nave del jugador fue destruida.");//Opcional por depuración
 
         // Destruir el spawner:
         Destroy(gameObject);

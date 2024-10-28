@@ -14,7 +14,7 @@ public class ProjectileController : MonoBehaviour
         rb.velocity = transform.forward * speed; // Inicia con la velocidad hacia adelante
 
         // Destruir el proyectil después de 5 segundos
-        Destroy(gameObject, 5f);
+        Destroy(gameObject, 3f);
     }
 
     void Update()
