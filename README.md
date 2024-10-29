@@ -9,7 +9,7 @@ Tu misión es derrotar a la mayor cantidad de enemigos posible y enfrentarte a j
 
 ### Controles
 - **Movimiento**: Usa las teclas de dirección o las teclas **W**, **A**, **S**, y **D** para mover tu nave.
-- **Disparo**: Usa **clic izquierdo* para disparar a los enemigos.
+- **Disparo**: Usa **clic izquierdo** para disparar a los enemigos.
 
 ### Mecánica del Juego
 - Los enemigos aparecerán a una distancia de tu posición y se acercarán a medida que avanza el tiempo.
