@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
 public class AIRCRAFT : MonoBehaviour
@@ -71,16 +70,25 @@ public class AIRCRAFT : MonoBehaviour
                 EndGame();  // Llama a la función que termina el juego
             }
         }
+        else if (collision.gameObject.CompareTag("Boss")) // Si colisiona con el jefe
+        {
+            Lives -= 2; // Resta 2 vidas
+            UpdateLivesUI();
+
+            if (Lives <= 0)
+            {
+                EndGame(); // Llama a la función que termina el juego
+            }
+        }
     }
+
 
     // Método para manejar el fin del juego
     void EndGame()
     {
         // Lógica para terminar el juego
         Debug.Log("Juego terminado. No te quedan vidas.");
-
         Destroy(gameObject); // Destruye la nave del jugador
-
     }
 
     void FixedUpdate()
@@ -91,7 +99,6 @@ public class AIRCRAFT : MonoBehaviour
 
     public void ResetLives()
     {
-        
         if (livesText == null)
         {
             livesText = GameObject.Find("LivesText")?.GetComponent<Text>();
@@ -103,7 +110,6 @@ public class AIRCRAFT : MonoBehaviour
 
     void UpdateLivesUI()
     {
-
         // Obtén nuevamente el objeto de texto de la UI si es nulo
         if (livesText == null)
         {
@@ -113,6 +119,17 @@ public class AIRCRAFT : MonoBehaviour
         if (livesText != null)
         {
             livesText.text = "Lives: " + Lives; // Actualiza el texto de vidas
+        }
+    }
+
+    public void DecreaseLives(int amount)
+    {
+        Lives -= amount; // Reduce las vidas
+        UpdateLivesUI(); // Actualiza la interfaz de usuario
+
+        if (Lives <= 0)
+        {
+            EndGame(); // Termina el juego si no quedan vidas
         }
     }
 

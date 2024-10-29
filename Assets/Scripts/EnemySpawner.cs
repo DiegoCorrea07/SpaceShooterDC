@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
-
 public class EnemySpawner : MonoBehaviour
 {
     public GameObject enemyPrefab;           // Prefab del enemigo
@@ -16,25 +15,29 @@ public class EnemySpawner : MonoBehaviour
     private float currentSpawnInterval;      // Intervalo de generación actual
     private float enemySpeed = 3f;           // Velocidad inicial de los enemigos
     private int lastScoreCheckpoint = 0;     // Puntaje en el que se aumentó la dificultad
+    private bool bossActive = false;          // Indica si el jefe está activo
 
     void Start()
     {
-        GameObject playerObject = GameObject.FindWithTag("Player"); 
+        GameObject playerObject = GameObject.FindWithTag("Player");
         if (playerObject != null)
         {
             playerTransform = playerObject.transform;
         }
         else
         {
-            Debug.LogError("No se encontró el jugador con la etiqueta 'Player'."); //Opcional por depuración
+            Debug.LogError("No se encontró el jugador con la etiqueta 'Player'."); // Opcional por depuración
         }
 
         currentSpawnInterval = initialSpawnInterval;
         StartCoroutine(SpawnEnemies());
     }
 
+    private bool isSpawning = false; // Variable para verificar si la generación de enemigos está activa
+
     IEnumerator SpawnEnemies()
     {
+        isSpawning = true; // Marca la generación como activa
         while (true)
         {
             // Verifica si el jugador aún existe
@@ -44,36 +47,57 @@ public class EnemySpawner : MonoBehaviour
                 yield break; // Termina la corrutina
             }
 
-            // Genera un enemigo y ajusta su velocidad
-            GameObject enemy = Instantiate(enemyPrefab, GetRandomSpawnPosition(), Quaternion.identity);
-            EnemyController enemyController = enemy.GetComponent<EnemyController>();
-            enemyController.SetSpeed(enemySpeed); // Asigna la velocidad actual al enemigo
-
-            // Incrementa dificultad cada 100 puntos
+            // Obtén el puntaje actual
             int currentScore = ScoreManager.Instance.score;
-            if (currentScore >= lastScoreCheckpoint + 100)
-            {
-                lastScoreCheckpoint += 100;
-                enemySpeed += 0.5f;  // Incrementa la velocidad de los enemigos
-                currentSpawnInterval = Mathf.Max(0.5f, currentSpawnInterval - 0.2f); // Reduce el intervalo de generación
-            }
 
             // Genera un jefe cada 50 puntos
-            if (currentScore % 50 == 0 && currentScore != lastScoreCheckpoint)
+            if (currentScore % 500 == 0 && currentScore != lastScoreCheckpoint && !bossActive)
             {
                 Instantiate(bossPrefab, GetRandomSpawnPosition(), Quaternion.identity); // Genera el jefe
                 lastScoreCheckpoint = currentScore; // Actualiza el checkpoint para evitar generar múltiples jefes
+                bossActive = true; // Marca el jefe como activo
+            }
+            else if (!bossActive) // Solo genera enemigos si no hay jefe activo
+            {
+                // Genera un enemigo y ajusta su velocidad
+                GameObject enemy = Instantiate(enemyPrefab, GetRandomSpawnPosition(), Quaternion.identity);
+                EnemyController enemyController = enemy.GetComponent<EnemyController>();
+                enemyController.SetSpeed(enemySpeed); // Asigna la velocidad actual al enemigo
+
+                // Incrementa dificultad cada 100 puntos
+                if (currentScore >= lastScoreCheckpoint + 100)
+                {
+                    lastScoreCheckpoint += 100;
+                    enemySpeed += 0.5f;  // Incrementa la velocidad de los enemigos
+                    currentSpawnInterval = Mathf.Max(0.5f, currentSpawnInterval - 0.2f); // Reduce el intervalo de generación
+                }
             }
 
             yield return new WaitForSeconds(currentSpawnInterval);
         }
     }
 
+    public void OnBossDestroyed()
+    {
+        bossActive = false; // El jefe ha sido destruido
+        if (isSpawning) // Verifica si la generación de enemigos está activa
+        {
+            StopCoroutine(SpawnEnemies()); // Detiene la corrutina actual si está corriendo
+            isSpawning = false; // Marca la generación como inactiva
+        }
+        RestartEnemySpawn(); // Reinicia la generación de enemigos
+    }
+
+    void RestartEnemySpawn()
+    {
+        StartCoroutine(SpawnEnemies()); // Reinicia la corrutina de generación de enemigos
+    }
+
     Vector3 GetRandomSpawnPosition()
     {
         if (playerTransform == null)
         {
-            Debug.LogWarning("playerTransform es nulo al obtener la posición de generación.");//Opcional por depuración
+            Debug.LogWarning("playerTransform es nulo al obtener la posición de generación.");// Opcional por depuración
             return Vector3.zero; // O devuelve una posición predeterminada
         }
 
@@ -84,7 +108,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void EndGame()
     {
-        Debug.Log("Juego terminado. La nave del jugador fue destruida.");//Opcional por depuración
+        Debug.Log("Juego terminado. La nave del jugador fue destruida.");// Opcional por depuración
 
         // Destruir el spawner:
         Destroy(gameObject);

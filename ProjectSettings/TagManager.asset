@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Bullet
   - Enemy
+  - Boss
+  - Projectile
   layers:
   - Default
   - TransparentFX
