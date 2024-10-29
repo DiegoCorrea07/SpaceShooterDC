@@ -5,7 +5,7 @@
 ## 🎮 Cómo Jugar
 
 ### Objetivo del Juego
-Tu misión es derrotar a la mayor cantidad de enemigos posible y enfrentarte a jefes que aparecerán cada 50 puntos. Sobrevive, acumula puntos, y desafía tu propio récord.
+Tu misión es derrotar a la mayor cantidad de enemigos posible y enfrentarte a jefes que aparecerán cada 500 puntos. Sobrevive, acumula puntos, y desafía tu propio récord.
 
 ### Controles
 - **Movimiento**: Usa las teclas de dirección o las teclas **W**, **A**, **S**, y **D** para mover tu nave.
